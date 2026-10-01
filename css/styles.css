@@ -117,6 +117,9 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
 .pular-conteudo:focus-visible { outline-offset: -6px; }
 
 /* ===== 3. LAYOUT ===== */
+/* A área da SPA ocupa ao menos a altura da tela: enquanto o JavaScript desenha
+   a primeira tela, o rodapé não aparece no topo e não "pula" depois (CLS). */
+#app { min-height: 100vh; }
 .container {
     width: min(var(--largura-max), 100% - 2 * var(--margem-lateral));
     margin-inline: auto;
