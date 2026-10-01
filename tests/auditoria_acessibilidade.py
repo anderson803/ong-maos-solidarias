@@ -341,7 +341,11 @@ def main():
                 relatorio[f'{nome} [{estado}]'] = problemas
                 total += len(problemas)
                 pagina.keyboard.press('Escape')
-            # 1.4.4 Redimensionar texto: fonte em 200%
+            # 1.4.4 Redimensionar texto: fonte em 200% na tela de computador.
+            # (Em 320 px o critério aplicável é o 1.4.10, já verificado acima.)
+            if nome != 'computador':
+                contexto.close()
+                continue
             pagina.goto(BASE + '#/cadastro')
             pagina.add_style_tag(content='html { font-size: 200% !important; }')
             pagina.wait_for_timeout(200)

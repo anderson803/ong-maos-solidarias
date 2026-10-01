@@ -71,7 +71,10 @@
 
     /* Layout */
     --largura-max: 1200px;
-    --gutter: var(--esp-5);
+    /* Espaço entre colunas: 1.5rem, limitado a 4% da tela. Sem o limite, as
+       11 separações do grid somavam mais que a largura da tela com o texto
+       ampliado em telas estreitas. */
+    --gutter: min(var(--esp-5), 4vw);
     --margem-lateral: var(--esp-4);
 }
 
@@ -87,7 +90,7 @@ body {
     background: var(--cor-fundo);
 }
 
-h1, h2, h3 { line-height: var(--altura-linha-titulo); margin: 0 0 var(--esp-4); }
+h1, h2, h3 { line-height: var(--altura-linha-titulo); margin: 0 0 var(--esp-4); overflow-wrap: break-word; }
 h1 { font-size: var(--fonte-3xl); }
 h2 { font-size: var(--fonte-2xl); color: var(--cor-primaria-escura); }
 h3 { font-size: var(--fonte-lg); }
@@ -363,6 +366,8 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
     color: #fff;
     font: inherit;
     font-weight: var(--peso-semi);
+    text-align: center;
+    max-width: 100%;          /* o texto do botão quebra a linha em vez de vazar */
     text-decoration: none;
     cursor: pointer;
     transition: background-color var(--transicao), transform var(--transicao), box-shadow var(--transicao);
@@ -556,6 +561,7 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
     margin: 0 0 var(--esp-5);
 }
 .formulario__legenda {
+    max-width: 100%;          /* a legenda quebra a linha em telas estreitas */
     padding-inline: var(--esp-2);
     font-size: var(--fonte-lg);
     font-weight: var(--peso-negrito);
@@ -614,7 +620,7 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
 .formulario__opcao:has(input:checked) label { font-weight: var(--peso-semi); color: var(--cor-primaria-escura); }
 
 /* Rodapé */
-.rodape { background: var(--cor-primaria-escura); color: #fff; padding-block: var(--esp-5); }
+.rodape { background: var(--cor-primaria-escura); color: #fff; padding-block: var(--esp-5); overflow-wrap: anywhere; }
 .rodape a { color: #fff; }
 .rodape p { margin: var(--esp-1) 0; }
 
