@@ -1,0 +1,16 @@
+# Dependências e builds
+node_modules/
+dist/
+
+# Variáveis de ambiente (nunca versionar segredos)
+.env
+.env.*
+
+# Arquivos do sistema e de editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log

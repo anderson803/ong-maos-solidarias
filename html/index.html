@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ONG Mãos Solidárias: projetos sociais, voluntariado e doações em Curitiba.">
+    <title>ONG Mãos Solidárias</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <!-- Biblioteca externa Day.js (datas), via CDN, com versão fixa.
+         "defer" garante a ordem: biblioteca → plugin → idioma → aplicação. -->
+    <script defer src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/dayjs.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/plugin/relativeTime.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/locale/pt-br.js"></script>
+    <!-- Ponto de entrada da aplicação (módulo ES) -->
+    <script type="module" src="../js/main.js"></script>
+</head>
+<body>
+    <a class="pular-conteudo" href="#app">Pular para o conteúdo principal</a>
+
+    <header class="cabecalho">
+        <div class="container cabecalho__conteudo">
+            <a class="cabecalho__marca" href="#/inicio">
+                <img src="../imagens/logo.svg" alt="" width="40" height="40">
+                <span>Mãos Solidárias</span>
+            </a>
+            <nav class="navegacao" aria-label="Navegação principal">
+                <button class="navegacao__botao" type="button" aria-expanded="false" aria-controls="menu-principal">
+                    <span class="navegacao__icone" aria-hidden="true"></span>
+                    Menu
+                </button>
+                <ul id="menu-principal" class="navegacao__lista">
+                    <li class="navegacao__item"><a class="navegacao__link" href="#/inicio" data-rota="inicio">Início</a></li>
+                    <li class="navegacao__item navegacao__item--submenu">
+                        <a class="navegacao__link" href="#/projetos" data-rota="projetos">Projetos</a>
+                        <ul class="submenu">
+                            <li><a class="submenu__link" href="#/projetos/cozinha-solidaria">Cozinha Solidária</a></li>
+                            <li><a class="submenu__link" href="#/projetos/aprender-juntos">Aprender Juntos</a></li>
+                            <li><a class="submenu__link" href="#/projetos/conecta-comunidade">Conecta Comunidade</a></li>
+                            <li><a class="submenu__link" href="#/projetos/voluntariado">Seja voluntário</a></li>
+                        </ul>
+                    </li>
+                    <li class="navegacao__item"><a class="navegacao__link" href="#/cadastro" data-rota="cadastro">Cadastro</a></li>
+                    <li class="navegacao__item"><a class="navegacao__link" href="#/painel" data-rota="painel">Painel</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Área onde o roteador desenha cada "página" da SPA -->
+    <main id="app" tabindex="-1">
+        <noscript>
+            <div class="container secao">
+                <p>Esta plataforma precisa de JavaScript ativado para funcionar.</p>
+            </div>
+        </noscript>
+    </main>
+
+    <footer class="rodape">
+        <div class="container">
+            <address>
+                <a href="tel:+5541999999999">(41) 99999-9999</a> ·
+                <a href="mailto:contato@maossolidarias.org.br">contato@maossolidarias.org.br</a>
+            </address>
+            <p>&copy; 2026 ONG Mãos Solidárias — organização fictícia criada para fins acadêmicos.</p>
+        </div>
+    </footer>
+
+    <!-- Componentes globais, reutilizados por todas as telas -->
+    <div id="toast" class="alerta toast" role="status" aria-live="polite">
+        <div>
+            <p class="alerta__titulo" data-toast-titulo></p>
+            <p data-toast-mensagem></p>
+        </div>
+    </div>
+
+    <dialog id="modal-doacao" class="modal" aria-labelledby="modal-doacao-titulo">
+        <div class="modal__conteudo">
+            <div class="modal__cabecalho">
+                <h2 id="modal-doacao-titulo" class="modal__titulo">Como funciona a doação?</h2>
+                <form method="dialog">
+                    <button class="modal__fechar" aria-label="Fechar">&times;</button>
+                </form>
+            </div>
+            <ol>
+                <li>Faça seu cadastro e escolha a opção “Doação”.</li>
+                <li>Nossa equipe entra em contato para combinar o tipo de doação.</li>
+                <li>Você acompanha o uso na prestação de contas anual.</li>
+            </ol>
+            <form method="dialog" class="modal__acoes">
+                <button class="botao">Entendi</button>
+            </form>
+        </div>
+    </dialog>
+
+    <dialog id="modal-confirmacao" class="modal" aria-labelledby="modal-confirmacao-titulo">
+        <div class="modal__conteudo">
+            <div class="alerta alerta--sucesso">
+                <div>
+                    <h2 id="modal-confirmacao-titulo" class="alerta__titulo">Cadastro recebido!</h2>
+                    <p data-confirmacao-mensagem>Obrigado por se juntar à Mãos Solidárias.</p>
+                </div>
+            </div>
+            <form method="dialog" class="modal__acoes">
+                <a class="botao botao--secundario" href="#/painel" data-fechar-modal>Ver painel</a>
+                <button class="botao">Fechar</button>
+            </form>
+        </div>
+    </dialog>
+</body>
+</html>
