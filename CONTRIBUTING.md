@@ -44,7 +44,8 @@ que aparece automaticamente. Após a revisão e a aprovação, faça o merge e a
 
 ## 3. Padrão de commits (Conventional Commits)
 
-Formato: `tipo: descrição no imperativo`, com até 72 caracteres na primeira linha. Se for preciso
+Formato: `tipo: descrição no imperativo`, com a primeira linha curta (de preferência até 50
+caracteres, no máximo 72). Se for preciso
 explicar o motivo, deixe uma linha em branco e escreva o corpo da mensagem.
 
 | Tipo | Quando usar |
@@ -72,6 +73,7 @@ Evite mensagens genéricas como `ajustes`, `update` ou `correções`.
 
 ## 4. Antes de abrir o pull request
 
+- [ ] `npm test` e `npm run test:dist` passam sem falhas.
 - [ ] O site funciona com um servidor local e o console não mostra erros.
 - [ ] Todas as telas podem ser usadas só com o teclado, com o foco sempre visível.
 - [ ] Imagens novas têm texto alternativo (ou `alt=""`, se forem decorativas).

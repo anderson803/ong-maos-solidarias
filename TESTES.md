@@ -73,3 +73,16 @@ Execução: `python tests/auditoria_acessibilidade.py http://localhost:8000/` (c
 Os 34 testes funcionais acima foram executados novamente após as correções: **34 de 34 aprovados**.
 Detalhes de cada problema em [docs/relatorio-acessibilidade.md](docs/relatorio-acessibilidade.md).
 
+## Novos testes funcionais e build de produção
+
+| Caso | Descrição | Resultado |
+| --- | --- | --- |
+| T35 | Submenu fecha com Esc (WCAG 1.4.13) | Aprovado |
+| T36 | Alto contraste: ativa, informa aria-pressed e mantém após recarregar | Aprovado |
+| T37 | Alto contraste segue a preferência do sistema (prefers-contrast) | Aprovado |
+
+Os 37 testes funcionais e a auditoria de acessibilidade foram executados também sobre a pasta
+`dist/` gerada pelo build: **37 de 37 aprovados e 0 ocorrências de acessibilidade**. Além disso,
+o HTML final de cada tela foi comparado entre o código-fonte e o build: idêntico, exceto pelos
+comentários removidos.
+

@@ -66,7 +66,9 @@ estáticos servidos diretamente pelo navegador.
 
 ## Instalação e execução
 
-**Pré-requisitos:** [Git](https://git-scm.com/) e um navegador atualizado (Chrome, Edge, Firefox ou Safari).
+**Para usar o site:** [Git](https://git-scm.com/) e um navegador atualizado (Chrome, Edge, Firefox ou Safari).
+**Para build e testes:** [Node.js](https://nodejs.org/) 18 ou superior e [Python](https://www.python.org/) 3.10
+ou superior com o Playwright (`pip install playwright` e `python -m playwright install chromium`).
 
 1. Clone o repositório:
 
@@ -78,12 +80,24 @@ estáticos servidos diretamente pelo navegador.
 2. Inicie um servidor local. Ele é **obrigatório**: por segurança, os navegadores bloqueiam módulos
    JavaScript abertos direto do disco (`file://`). Escolha uma opção:
 
+   - **npm:** `npm start` (equivale a `python -m http.server 8000`)
    - **VS Code:** instale a extensão *Live Server*, clique com o botão direito em `index.html`
      e escolha *Open with Live Server*.
-   - **Python:** `python -m http.server 8000`
-   - **Node.js:** `npx serve .`
 
 3. Acesse `http://localhost:8000` (ou o endereço indicado pelo Live Server).
+
+O site não tem dependências: não é preciso rodar `npm install`.
+
+### Comandos disponíveis
+
+| Comando | O que faz |
+| --- | --- |
+| `npm start` | Servidor local com o código-fonte em `http://localhost:8000` |
+| `npm run build` | Gera a pasta `dist/` otimizada para produção |
+| `npm run preview` | Gera o build e serve a pasta `dist/` em `http://localhost:8000` |
+| `npm test` | Testes funcionais (37 casos) e auditoria de acessibilidade no código-fonte |
+| `npm run test:dist` | Gera o build e roda os mesmos testes sobre a pasta `dist/` |
+| `npm run imagens` | Gera as versões WebP das imagens (após adicionar ou trocar fotos) |
 
 ## Como usar
 
@@ -117,8 +131,15 @@ ong-maos-solidarias/
 │   ├── components/            → templates reutilizáveis (cartão, alerta, campo, etiqueta…)
 │   ├── pages/                 → uma tela por arquivo (inicio, projetos, cadastro, painel, 404)
 │   └── modules/               → regras e serviços (storage, cadastros, validação, máscaras, datas…)
+├── scripts/
+│   ├── build.mjs              → build de produção (minificação) sem dependências
+│   └── otimizar_imagens.py    → conversão das imagens para WebP em dois tamanhos
+├── tests/                     → testes funcionais e auditoria de acessibilidade (Playwright)
+├── docs/                      → relatório de acessibilidade
 ├── .github/
+│   ├── workflows/ci-deploy.yml → CI/CD: testes em pull requests e deploy no GitHub Pages
 │   └── pull_request_template.md → roteiro de revisão usado nos pull requests
+├── package.json               → scripts npm (start, build, test)
 ├── CHANGELOG.md               → histórico de versões
 ├── CONTRIBUTING.md            → fluxo GitFlow e padrão de commits
 ├── TESTES.md                  → plano e resultados dos testes
@@ -183,21 +204,48 @@ o critério violado, a correção e o resultado, está em
 
 ## Testes
 
-O plano de testes e os resultados estão em [TESTES.md](TESTES.md). Antes de abrir um pull request,
-execute ao menos o roteiro manual: navegar por todas as telas usando só o teclado, enviar o
-formulário vazio, cadastrar um voluntário e conferir o painel.
+| Tipo | Comando | Cobertura |
+| --- | --- | --- |
+| Funcionais | `python tests/testes_funcionais.py [dist]` | 37 casos: rotas, filtro, modal, validação, rascunho, localStorage, XSS, menu, teclado e alto contraste |
+| Acessibilidade | `python tests/auditoria_acessibilidade.py [dist]` | WCAG 2.1 AA em 5 telas e 7 estados, em 1280 px, 320 px e alto contraste |
+| Manual | roteiro em [TESTES.md](TESTES.md) | Leitor de tela (NVDA) e Lighthouse |
+
+Os scripts iniciam o próprio servidor local. Resultados detalhados em [TESTES.md](TESTES.md).
+
+## Build e otimização
+
+`npm run build` gera a pasta `dist/` com:
+
+- **HTML, CSS e JavaScript minificados** por `scripts/build.mjs` (sem dependências externas):
+  comentários e espaços removidos, preservando textos, templates e expressões regulares;
+- **imagens WebP** em dois tamanhos com `<picture>` e `srcset`: o navegador baixa a versão adequada
+  à tela e usa o JPEG apenas se não suportar WebP;
+- `loading="lazy"` nas imagens dos cartões, `fetchpriority="high"` na imagem principal e
+  `width`/`height` em todas, evitando deslocamentos do layout.
+
+| Página inicial (transferência) | Antes | Depois | Redução |
+| --- | --- | --- | --- |
+| HTML | 5.4 KB | 4.1 KB | 24% |
+| CSS | 22.9 KB | 19.5 KB | 15%* |
+| JavaScript | 56.5 KB | 39.0 KB | 31%* |
+| Imagens (computador) | 73.1 KB | 16.2 KB | 78% |
+| Imagens (celular) | 73.1 KB | 11.8 KB | 84% |
+| **Total (computador)** | **157.9 KB** | **78.8 KB** | **50%** |
+
+\* A redução já desconta o código novo de acessibilidade incluído nesta versão. Os valores não
+consideram a compressão gzip aplicada pelo GitHub Pages, que reduz ainda mais a transferência.
 
 ## Deploy
 
-O site é publicado no **GitHub Pages** a partir da branch `main`:
+O deploy é automático, pelo **GitHub Actions** (`.github/workflows/ci-deploy.yml`):
 
-1. No GitHub, abra **Settings → Pages**.
-2. Em *Source*, escolha **Deploy from a branch**, branch `main` e pasta `/ (root)`.
-3. Salve. Em alguns minutos o site fica disponível em `https://SEU-USUARIO.github.io/ong-maos-solidarias/`,
-   com HTTPS automático.
+1. Em cada **pull request** para `develop` ou `main`, o workflow gera o build e roda os testes
+   funcionais e a auditoria de acessibilidade sobre a pasta `dist/`.
+2. A cada **push na `main`** (merge de uma release ou hotfix), repete as verificações e, se tudo
+   passar, publica a pasta `dist/` no **GitHub Pages**, com HTTPS automático.
 
-A cada merge em `main` o GitHub Pages publica a nova versão. O arquivo `.nojekyll` desativa o
-processamento Jekyll, desnecessário para um site estático.
+Configuração inicial (uma única vez): no GitHub, abra **Settings → Pages** e, em *Source*,
+escolha **GitHub Actions**. O site fica disponível em `https://SEU-USUARIO.github.io/ong-maos-solidarias/`.
 
 ## Manutenção
 
