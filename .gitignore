@@ -14,3 +14,7 @@ Thumbs.db
 
 # Logs
 *.log
+auditoria.json
+
+# Python
+__pycache__/

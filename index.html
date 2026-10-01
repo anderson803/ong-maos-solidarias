@@ -7,6 +7,8 @@
     <title>ONG Mãos Solidárias</title>
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/styles.css">
+    <!-- Aplica o alto contraste antes de desenhar a página (sem "piscar") -->
+    <script src="js/contraste-inicial.js"></script>
     <!-- Biblioteca externa Day.js (datas), via CDN, com versão fixa.
          "defer" garante a ordem: biblioteca → plugin → idioma → aplicação. -->
     <script defer src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/dayjs.min.js"></script>
@@ -24,6 +26,10 @@
                 <img src="imagens/logo.svg" alt="" width="40" height="40">
                 <span>Mãos Solidárias</span>
             </a>
+            <button class="contraste" type="button" aria-pressed="false" data-alternar-contraste>
+                <span class="contraste__icone" aria-hidden="true"></span>
+                Alto contraste
+            </button>
             <nav class="navegacao" aria-label="Navegação principal">
                 <button class="navegacao__botao" type="button" aria-expanded="false" aria-controls="menu-principal">
                     <span class="navegacao__icone" aria-hidden="true"></span>

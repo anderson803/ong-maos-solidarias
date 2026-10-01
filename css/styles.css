@@ -33,6 +33,7 @@
     --cor-erro: #b3261e;
     --cor-sucesso: #1e7b3a;
     --cor-foco: #1a56b8;
+    --cor-foco-inverso: #ffffff;   /* foco sobre fundos escuros */
 
     /* Tipografia — escala modular 1.25 (terça maior) */
     --fonte-base: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -70,7 +71,10 @@
 
     /* Layout */
     --largura-max: 1200px;
-    --gutter: var(--esp-5);
+    /* Espaço entre colunas: 1.5rem, limitado a 4% da tela. Sem o limite, as
+       11 separações do grid somavam mais que a largura da tela com o texto
+       ampliado em telas estreitas. */
+    --gutter: min(var(--esp-5), 4vw);
     --margem-lateral: var(--esp-4);
 }
 
@@ -86,7 +90,7 @@ body {
     background: var(--cor-fundo);
 }
 
-h1, h2, h3 { line-height: var(--altura-linha-titulo); margin: 0 0 var(--esp-4); }
+h1, h2, h3 { line-height: var(--altura-linha-titulo); margin: 0 0 var(--esp-4); overflow-wrap: break-word; }
 h1 { font-size: var(--fonte-3xl); }
 h2 { font-size: var(--fonte-2xl); color: var(--cor-primaria-escura); }
 h3 { font-size: var(--fonte-lg); }
@@ -101,6 +105,16 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
     outline: 3px solid var(--cor-foco);
     outline-offset: 2px;
 }
+/* Em fundos escuros (cabeçalho, rodapé, link "pular") o azul do foco teria
+   contraste de apenas 1.2:1; o contorno passa a ser branco (WCAG 1.4.11). */
+.cabecalho :focus-visible,
+.rodape :focus-visible,
+.pular-conteudo:focus-visible {
+    outline-color: var(--cor-foco-inverso);
+}
+/* O link "pular" fica sobre o cabeçalho: o contorno é desenhado por dentro,
+   contrastando com o próprio fundo escuro do link. */
+.pular-conteudo:focus-visible { outline-offset: -6px; }
 
 /* ===== 3. LAYOUT ===== */
 .container {
@@ -190,6 +204,36 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
     font-size: var(--fonte-lg);
     font-weight: var(--peso-negrito);
     text-decoration: none;
+}
+
+/* Botão "Alto contraste" — fica ao lado do menu; no computador, após os links */
+.cabecalho__marca { margin-right: auto; }
+.contraste {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--esp-2);
+    padding: var(--esp-2) var(--esp-3);
+    border: 2px solid #fff;
+    border-radius: var(--raio-md);
+    background: transparent;
+    color: #fff;
+    font: inherit;
+    font-size: var(--fonte-sm);
+    font-weight: var(--peso-semi);
+    cursor: pointer;
+}
+.contraste:hover { background: var(--cor-primaria-escura); }
+/* Ícone: círculo metade preenchido, que inverte quando o modo está ativo */
+.contraste__icone {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+}
+.contraste[aria-pressed="true"] { background: #fff; color: var(--cor-primaria-escura); }
+@media (min-width: 768px) {
+    .contraste { order: 3; }
 }
 
 /* Navegação — menu hambúrguer no celular e dropdown no desktop.
@@ -321,9 +365,16 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
         opacity: 1;
         transform: translateY(0);
     }
+    /* Fechado com a tecla Esc, mesmo com o mouse ou o foco sobre o item */
+    .navegacao__item--submenu.navegacao__item--fechado > .submenu {
+        visibility: hidden;
+        opacity: 0;
+    }
     .submenu__link { color: var(--cor-primaria-escura); }
     .submenu__link:hover,
     .submenu__link:focus-visible { background: var(--cor-primaria-clara); }
+    /* O submenu suspenso tem fundo claro: volta ao contorno azul */
+    .submenu__link:focus-visible { outline-color: var(--cor-foco); }
 }
 
 /* Destaque (hero) */
@@ -345,6 +396,8 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
     color: #fff;
     font: inherit;
     font-weight: var(--peso-semi);
+    text-align: center;
+    max-width: 100%;          /* o texto do botão quebra a linha em vez de vazar */
     text-decoration: none;
     cursor: pointer;
     transition: background-color var(--transicao), transform var(--transicao), box-shadow var(--transicao);
@@ -476,6 +529,9 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
     font-weight: var(--peso-negrito);
 }
 .alerta__titulo { margin: 0 0 var(--esp-1); font-size: var(--fonte-lg); font-weight: var(--peso-negrito); color: var(--alerta-cor); }
+/* O texto do alerta pode encolher e quebrar palavras longas: com o texto
+   ampliado em 200% ele ultrapassava a coluna lateral (WCAG 1.4.4). */
+.alerta > * { min-width: 0; overflow-wrap: break-word; }
 .alerta p:last-child,
 .alerta ul:last-child { margin-bottom: 0; }
 .alerta--info { --alerta-cor: var(--cor-foco); --alerta-fundo: #eaf1fb; }
@@ -526,12 +582,16 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
 
 /* Formulário */
 .formulario__grupo {
+    /* Por padrão o fieldset não encolhe abaixo do conteúdo (min-width: min-content),
+       o que gerava rolagem horizontal em telas de 320px (WCAG 1.4.10). */
+    min-width: 0;
     border: 1px solid var(--cor-borda);
     border-radius: var(--raio-lg);
     padding: var(--esp-5);
     margin: 0 0 var(--esp-5);
 }
 .formulario__legenda {
+    max-width: 100%;          /* a legenda quebra a linha em telas estreitas */
     padding-inline: var(--esp-2);
     font-size: var(--fonte-lg);
     font-weight: var(--peso-negrito);
@@ -554,7 +614,8 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
     box-shadow: 0 0 0 3px rgba(26, 86, 184, 0.35);
 }
 .formulario__entrada:hover { border-color: var(--cor-texto-suave); }
-.formulario__entrada::placeholder { color: var(--cor-texto-suave); opacity: 0.8; }
+/* Opacidade 1: com 0.8 o texto de exemplo ficava com 4.42:1, abaixo de 4.5:1 */
+.formulario__entrada::placeholder { color: var(--cor-texto-suave); opacity: 1; }
 /* Estados de validação controlados pelo JavaScript (aria-invalid) */
 .formulario__entrada[aria-invalid="false"] { border-color: var(--cor-sucesso); }
 .formulario__entrada[aria-invalid="true"] {
@@ -589,7 +650,7 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
 .formulario__opcao:has(input:checked) label { font-weight: var(--peso-semi); color: var(--cor-primaria-escura); }
 
 /* Rodapé */
-.rodape { background: var(--cor-primaria-escura); color: #fff; padding-block: var(--esp-5); }
+.rodape { background: var(--cor-primaria-escura); color: #fff; padding-block: var(--esp-5); overflow-wrap: anywhere; }
 .rodape a { color: #fff; }
 .rodape p { margin: var(--esp-1) 0; }
 
@@ -676,4 +737,57 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
         transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
     }
+}
+
+/* ===== 6. MODO DE ALTO CONTRASTE =====
+   Ativado pelo botão do cabeçalho ou, sem escolha salva, pela preferência
+   "aumentar contraste" do sistema (prefers-contrast: more), lida em
+   js/contraste-inicial.js. Como todo o visual usa variáveis, basta trocar os
+   tokens; as regras abaixo cuidam do que não depende só da cor. */
+:root[data-contraste="alto"] {
+    --cor-primaria: #0b3d24;          /* fundo do cabeçalho: 12.3:1 com branco */
+    --cor-primaria-escura: #000000;
+    --cor-primaria-clara: #ffffff;
+    --cor-secundaria-escura: #6b2f00;
+    --cor-secundaria-clara: #ffffff;
+    --cor-texto: #000000;
+    --cor-texto-suave: #1a1a1a;
+    --cor-borda: #000000;
+    --cor-borda-forte: #000000;
+    --cor-fundo: #ffffff;
+    --cor-fundo-alternativo: #ffffff;
+    --cor-erro: #8a0000;
+    --cor-sucesso: #00521f;
+    --cor-foco: #0033cc;
+    --sombra-sm: none;
+    --sombra-md: none;
+    --sombra-lg: none;
+}
+[data-contraste="alto"] :focus-visible { outline-width: 4px; }
+/* Todos os links sublinhados: a identificação não depende da cor */
+[data-contraste="alto"] a:not(.botao):not(.cabecalho__marca) { text-decoration: underline; text-underline-offset: 0.2em; }
+/* Seções, destaques e componentes separados por bordas em vez de tons de fundo */
+[data-contraste="alto"] .secao--alternada,
+[data-contraste="alto"] .destaque { border-block: 2px solid #000; }
+[data-contraste="alto"] .cartao,
+[data-contraste="alto"] .formulario__grupo { border-width: 2px; }
+[data-contraste="alto"] .alerta { --alerta-fundo: #ffffff; border: 2px solid var(--alerta-cor); border-left-width: 8px; }
+[data-contraste="alto"] .etiqueta { --etiqueta-fundo: #ffffff; border: 2px solid currentColor; }
+[data-contraste="alto"] .etiqueta--solida { --etiqueta-cor: #ffffff; --etiqueta-fundo: #000000; }
+[data-contraste="alto"] .submenu { border: 2px solid #000; }
+[data-contraste="alto"] .modal::backdrop { background: rgba(0, 0, 0, 0.85); }
+[data-contraste="alto"] .formulario__entrada:focus-visible { box-shadow: 0 0 0 4px var(--cor-foco); }
+
+/* Modo de cores forçadas do sistema (ex.: Alto Contraste do Windows):
+   o navegador substitui as cores, então os estados passam a usar bordas
+   e cores do sistema para continuarem perceptíveis. */
+@media (forced-colors: active) {
+    :focus-visible { outline: 3px solid Highlight; }
+    .botao, .filtro, .contraste, .navegacao__botao, .etiqueta { border: 2px solid ButtonText; }
+    .filtro[aria-pressed="true"],
+    .contraste[aria-pressed="true"],
+    .navegacao__link[aria-current="page"] { forced-color-adjust: none; background: Highlight; color: HighlightText; }
+    .alerta { border: 2px solid CanvasText; }
+    .alerta::before { forced-color-adjust: none; background: CanvasText; color: Canvas; }
+    .navegacao__icone, .navegacao__icone::before, .navegacao__icone::after { background: ButtonText; }
 }

@@ -56,3 +56,20 @@ O CDN da biblioteca Day.js foi bloqueado de propósito para testar o plano B de 
 
 - Com internet no computador do usuário, conferir se o painel exibe o tempo relativo
   ("há alguns segundos"), o que confirma o carregamento da biblioteca Day.js pelo CDN.
+
+---
+
+# Auditoria de acessibilidade — Experiência Prática IV
+
+Execução: `python tests/auditoria_acessibilidade.py http://localhost:8000/` (com um servidor local ativo).
+
+| Cenário | Telas e estados | Primeira execução | Após as correções |
+| --- | --- | --- | --- |
+| Computador (1280 px) | 5 telas + 7 estados + texto em 200% | 45 ocorrências | 0 |
+| Celular estreito (320 px) | 5 telas + 7 estados | 22 ocorrências | 0 |
+| Alto contraste (1280 px) | 5 telas + 7 estados + texto em 200% | — (modo criado nesta etapa) | 0 |
+| Alto contraste (320 px) | 5 telas + 7 estados | — | 0 |
+
+Os 34 testes funcionais acima foram executados novamente após as correções: **34 de 34 aprovados**.
+Detalhes de cada problema em [docs/relatorio-acessibilidade.md](docs/relatorio-acessibilidade.md).
+

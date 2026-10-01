@@ -165,16 +165,21 @@ refactor: move index.html para a raiz do projeto
 
 ## Acessibilidade
 
-O projeto tem como meta a conformidade com a **WCAG 2.1, nível AA**. Recursos já implementados:
+O projeto segue a **WCAG 2.1, nível AA**. A auditoria completa, com os problemas encontrados,
+o critério violado, a correção e o resultado, está em
+[docs/relatorio-acessibilidade.md](docs/relatorio-acessibilidade.md).
 
-- HTML semântico, idioma `pt-BR` declarado e hierarquia de títulos sem saltos;
-- link "Pular para o conteúdo" como primeiro item navegável;
+- HTML semântico, idioma `pt-BR` declarado, regiões (`header`, `nav`, `main`, `aside`, `footer`)
+  e hierarquia de títulos sem saltos;
+- navegação completa por teclado: link "Pular para o conteúdo", foco visível com contraste mínimo
+  de 3:1 em qualquer fundo, Esc fecha menu, submenu e modais;
 - foco movido para o título a cada troca de tela e link ativo marcado com `aria-current="page"`;
 - formulário com `label` associado, `fieldset`/`legend`, `aria-describedby`, `aria-invalid`
   e resumo de erros com atalhos para cada campo;
-- contraste de cores calculado e respeito à preferência `prefers-reduced-motion`.
-
-O relatório da auditoria de acessibilidade é descrito na seção de testes.
+- texto com contraste mínimo de 4.5:1, layout sem rolagem horizontal em 320 px e com texto em 200%;
+- **modo de alto contraste**: botão no cabeçalho (`aria-pressed`) que salva a escolha e, por padrão,
+  segue a preferência `prefers-contrast: more` do sistema; suporte ao modo de cores forçadas do Windows;
+- respeito à preferência `prefers-reduced-motion`.
 
 ## Testes
 
