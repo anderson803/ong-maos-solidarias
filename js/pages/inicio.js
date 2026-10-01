@@ -1,6 +1,6 @@
 import { html } from '../utils/html.js';
 import { projetos, indicadores } from '../data/dados.js';
-import { cartaoProjeto, indicador } from '../components/componentes.js';
+import { cartaoProjeto, indicador, imagemResponsiva } from '../components/componentes.js';
 import { listarCadastros } from '../modules/cadastros.js';
 
 export const paginaInicio = {
@@ -23,9 +23,15 @@ export const paginaInicio = {
                         </p>
                     </div>
                     <div class="col-12 col-lg-5">
-                        <img class="destaque__imagem" src="../imagens/ong-maos-solidarias.jpg"
-                             alt="Voluntários da ONG Mãos Solidárias reunidos em uma ação comunitária"
-                             width="960" height="640">
+                        ${imagemResponsiva({
+                            src: 'imagens/ong-maos-solidarias.jpg',
+                            alt: 'Voluntários da ONG Mãos Solidárias reunidos em uma ação comunitária',
+                            largura: 960,
+                            altura: 640,
+                            tamanhos: '(min-width: 992px) 42vw, 100vw',
+                            classe: 'destaque__imagem',
+                            prioridade: true
+                        })}
                     </div>
                 </div>
             </section>

@@ -5,15 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="ONG Mãos Solidárias: projetos sociais, voluntariado e doações em Curitiba.">
     <title>ONG Mãos Solidárias</title>
-    <link rel="stylesheet" href="../css/reset.css">
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Aplica o alto contraste antes de desenhar a página (sem "piscar") -->
+    <script src="js/contraste-inicial.js"></script>
     <!-- Biblioteca externa Day.js (datas), via CDN, com versão fixa.
-         "defer" garante a ordem: biblioteca → plugin → idioma → aplicação. -->
-    <script defer src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/dayjs.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/plugin/relativeTime.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/locale/pt-br.js"></script>
+         "defer" garante a ordem: biblioteca → plugin → idioma → aplicação.
+         "integrity" (SRI): o navegador só executa o arquivo se o conteúdo for exatamente
+         o esperado, protegendo o site caso o CDN seja comprometido. -->
+    <script defer src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/dayjs.min.js"
+            integrity="sha384-DpVxUeeBWjUvUV1czyIHJAjh+jYUZFu2lLakbdua5vbwOrBGi1UgaKCHjTC+x3Ky" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/plugin/relativeTime.js"
+            integrity="sha384-ssUzPQXjLHLO39a9AiuwxnnyDxIvOMUxEQpqfreUaW7jLEdDAXiF6UooZRO53F6Z" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/locale/pt-br.js"
+            integrity="sha384-N5YzbiU7DG3BWIMW4lF4zgLd8e8c/n0inwDE8ylNAK2O3jltR4R6i6JG7xFK0hqb" crossorigin="anonymous"></script>
     <!-- Ponto de entrada da aplicação (módulo ES) -->
-    <script type="module" src="../js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
 </head>
 <body>
     <a class="pular-conteudo" href="#app">Pular para o conteúdo principal</a>
@@ -21,9 +28,13 @@
     <header class="cabecalho">
         <div class="container cabecalho__conteudo">
             <a class="cabecalho__marca" href="#/inicio">
-                <img src="../imagens/logo.svg" alt="" width="40" height="40">
+                <img src="imagens/logo.svg" alt="" width="40" height="40">
                 <span>Mãos Solidárias</span>
             </a>
+            <button class="contraste" type="button" aria-pressed="false" data-alternar-contraste>
+                <span class="contraste__icone" aria-hidden="true"></span>
+                Alto contraste
+            </button>
             <nav class="navegacao" aria-label="Navegação principal">
                 <button class="navegacao__botao" type="button" aria-expanded="false" aria-controls="menu-principal">
                     <span class="navegacao__icone" aria-hidden="true"></span>
