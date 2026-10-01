@@ -206,6 +206,36 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
     text-decoration: none;
 }
 
+/* Botão "Alto contraste" — fica ao lado do menu; no computador, após os links */
+.cabecalho__marca { margin-right: auto; }
+.contraste {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--esp-2);
+    padding: var(--esp-2) var(--esp-3);
+    border: 2px solid #fff;
+    border-radius: var(--raio-md);
+    background: transparent;
+    color: #fff;
+    font: inherit;
+    font-size: var(--fonte-sm);
+    font-weight: var(--peso-semi);
+    cursor: pointer;
+}
+.contraste:hover { background: var(--cor-primaria-escura); }
+/* Ícone: círculo metade preenchido, que inverte quando o modo está ativo */
+.contraste__icone {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+}
+.contraste[aria-pressed="true"] { background: #fff; color: var(--cor-primaria-escura); }
+@media (min-width: 768px) {
+    .contraste { order: 3; }
+}
+
 /* Navegação — menu hambúrguer no celular e dropdown no desktop.
    Sem JavaScript (sem a classe .js no <html>), o menu fica sempre visível. */
 .navegacao__lista {
@@ -707,4 +737,57 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
         transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
     }
+}
+
+/* ===== 6. MODO DE ALTO CONTRASTE =====
+   Ativado pelo botão do cabeçalho ou, sem escolha salva, pela preferência
+   "aumentar contraste" do sistema (prefers-contrast: more), lida em
+   js/contraste-inicial.js. Como todo o visual usa variáveis, basta trocar os
+   tokens; as regras abaixo cuidam do que não depende só da cor. */
+:root[data-contraste="alto"] {
+    --cor-primaria: #0b3d24;          /* fundo do cabeçalho: 12.3:1 com branco */
+    --cor-primaria-escura: #000000;
+    --cor-primaria-clara: #ffffff;
+    --cor-secundaria-escura: #6b2f00;
+    --cor-secundaria-clara: #ffffff;
+    --cor-texto: #000000;
+    --cor-texto-suave: #1a1a1a;
+    --cor-borda: #000000;
+    --cor-borda-forte: #000000;
+    --cor-fundo: #ffffff;
+    --cor-fundo-alternativo: #ffffff;
+    --cor-erro: #8a0000;
+    --cor-sucesso: #00521f;
+    --cor-foco: #0033cc;
+    --sombra-sm: none;
+    --sombra-md: none;
+    --sombra-lg: none;
+}
+[data-contraste="alto"] :focus-visible { outline-width: 4px; }
+/* Todos os links sublinhados: a identificação não depende da cor */
+[data-contraste="alto"] a:not(.botao):not(.cabecalho__marca) { text-decoration: underline; text-underline-offset: 0.2em; }
+/* Seções, destaques e componentes separados por bordas em vez de tons de fundo */
+[data-contraste="alto"] .secao--alternada,
+[data-contraste="alto"] .destaque { border-block: 2px solid #000; }
+[data-contraste="alto"] .cartao,
+[data-contraste="alto"] .formulario__grupo { border-width: 2px; }
+[data-contraste="alto"] .alerta { --alerta-fundo: #ffffff; border: 2px solid var(--alerta-cor); border-left-width: 8px; }
+[data-contraste="alto"] .etiqueta { --etiqueta-fundo: #ffffff; border: 2px solid currentColor; }
+[data-contraste="alto"] .etiqueta--solida { --etiqueta-cor: #ffffff; --etiqueta-fundo: #000000; }
+[data-contraste="alto"] .submenu { border: 2px solid #000; }
+[data-contraste="alto"] .modal::backdrop { background: rgba(0, 0, 0, 0.85); }
+[data-contraste="alto"] .formulario__entrada:focus-visible { box-shadow: 0 0 0 4px var(--cor-foco); }
+
+/* Modo de cores forçadas do sistema (ex.: Alto Contraste do Windows):
+   o navegador substitui as cores, então os estados passam a usar bordas
+   e cores do sistema para continuarem perceptíveis. */
+@media (forced-colors: active) {
+    :focus-visible { outline: 3px solid Highlight; }
+    .botao, .filtro, .contraste, .navegacao__botao, .etiqueta { border: 2px solid ButtonText; }
+    .filtro[aria-pressed="true"],
+    .contraste[aria-pressed="true"],
+    .navegacao__link[aria-current="page"] { forced-color-adjust: none; background: Highlight; color: HighlightText; }
+    .alerta { border: 2px solid CanvasText; }
+    .alerta::before { forced-color-adjust: none; background: CanvasText; color: Canvas; }
+    .navegacao__icone, .navegacao__icone::before, .navegacao__icone::after { background: ButtonText; }
 }

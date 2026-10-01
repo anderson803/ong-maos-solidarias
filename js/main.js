@@ -4,6 +4,7 @@
  */
 import { iniciarRoteador } from './router.js';
 import { iniciarMenu, iniciarModais, iniciarAtalhoConteudo } from './modules/interface.js';
+import { iniciarContraste } from './modules/contraste.js';
 import { paginaInicio } from './pages/inicio.js';
 import { paginaProjetos } from './pages/projetos.js';
 import { paginaCadastro } from './pages/cadastro.js';
@@ -16,6 +17,7 @@ document.documentElement.classList.add('js');
 iniciarAtalhoConteudo();
 iniciarMenu();
 iniciarModais();
+iniciarContraste();
 
 iniciarRoteador({
     elemento: document.getElementById('app'),
