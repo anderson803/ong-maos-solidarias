@@ -98,6 +98,18 @@ JS_AUDITORIA = r"""
     if (r < minimo) add('1.4.3 Contraste mínimo', `contraste ${r.toFixed(2)}:1 (mínimo ${minimo}:1)`, descrever(el));
   }
 
+  // 1.4.3 Contraste do texto de exemplo (placeholder)
+  for (const campo of document.querySelectorAll('[placeholder]')) {
+    if (!visivel(campo)) continue;
+    const ph = getComputedStyle(campo, '::placeholder');
+    const fundo = fundoEfetivo(campo);
+    if (fundo.imagem) continue;
+    const cor = rgba(ph.color);
+    cor.a *= parseFloat(ph.opacity || '1');
+    const r = razao(misturar(cor, fundo), fundo);
+    if (r < 4.5) add('1.4.3 Contraste mínimo', `placeholder com contraste ${r.toFixed(2)}:1 (mínimo 4.5:1)`, descrever(campo));
+  }
+
   // 1.4.11 Contraste de componentes (contorno de campos)
   for (const campo of document.querySelectorAll('input:not([type=hidden]):not([type=radio]):not([type=checkbox]), select, textarea')) {
     if (!visivel(campo)) continue;
@@ -179,14 +191,35 @@ JS_FOCO = r"""
 () => {
   const el = document.activeElement;
   if (!el || el === document.body) return null;
+  const rgba = (str) => {
+    const m = (str || '').match(/rgba?\(([^)]+)\)/);
+    if (!m) return null;
+    const p = m[1].split(/[ ,/]+/).filter(Boolean).map(Number);
+    return { r: p[0], g: p[1], b: p[2], a: p.length > 3 ? p[3] : 1 };
+  };
+  const lum = ({ r, g, b }) => {
+    const c = [r, g, b].map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  };
+  const razao = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
+  const fundo = (n) => {
+    for (; n; n = n.parentElement) {
+      const c = rgba(getComputedStyle(n).backgroundColor);
+      if (c && c.a === 1) return c;
+    }
+    return { r: 255, g: 255, b: 255, a: 1 };
+  };
   const cs = getComputedStyle(el);
   const contorno = cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) >= 2;
   const sombra = cs.boxShadow && cs.boxShadow !== 'none';
+  // 1.4.11: o contorno de foco precisa de 3:1 em relação à cor ao redor do elemento
+  let contrasteFoco = null;
+  if (contorno && parseFloat(cs.outlineOffset) > 0) contrasteFoco = razao(rgba(cs.outlineColor), fundo(el.parentElement));
   let s = el.tagName.toLowerCase();
   if (el.classList.length) s += '.' + [...el.classList].join('.');
   s += ' "' + (el.innerText || el.value || el.getAttribute('aria-label') || '').trim().slice(0, 30) + '"';
   const r = el.getBoundingClientRect();
-  return { alvo: s, visivel: contorno || sombra, dentroDaTela: r.width > 0 && r.height > 0 };
+  return { alvo: s, visivel: contorno || sombra, contrasteFoco, dentroDaTela: r.width > 0 && r.height > 0 };
 }
 """
 
@@ -204,6 +237,9 @@ def auditar_foco(pagina, limite=80):
         vistos.add(info['alvo'])
         if not info['visivel']:
             problemas.append({'criterio': '2.4.7 Foco visível', 'descricao': 'elemento recebe foco sem indicador visível', 'alvo': info['alvo']})
+        if info['contrasteFoco'] is not None and info['contrasteFoco'] < 3:
+            problemas.append({'criterio': '1.4.11 Contraste do indicador de foco',
+                              'descricao': f"contorno de foco {info['contrasteFoco']:.2f}:1 (mínimo 3:1)", 'alvo': info['alvo']})
         if not info['dentroDaTela']:
             problemas.append({'criterio': '2.4.3 Ordem do foco', 'descricao': 'foco em elemento invisível', 'alvo': info['alvo']})
     return problemas, len(vistos)
