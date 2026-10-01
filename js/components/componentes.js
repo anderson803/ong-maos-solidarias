@@ -29,6 +29,23 @@ export function indicador({ numero, texto }, colunas = 'col-12 col-sm-6 col-lg-4
 }
 
 /**
+ * Imagem responsiva e otimizada.
+ * Entrega WebP em dois tamanhos (o navegador escolhe pelo "sizes") e mantém o
+ * JPEG como alternativa. As versões são geradas por scripts/otimizar_imagens.py.
+ * width/height reservam o espaço e evitam que o layout "pule" ao carregar.
+ */
+export function imagemResponsiva({ src, alt, largura, altura, tamanhos, classe = '', prioridade = false }) {
+    const base = src.replace(/\.jpg$/, '');
+    return html`
+        <picture>
+            <source type="image/webp" sizes="${tamanhos}"
+                    srcset="${base}-480.webp 480w, ${base}.webp ${largura}w">
+            <img class="${classe}" src="${src}" alt="${alt}" width="${largura}" height="${altura}"
+                 decoding="async" ${atributos(prioridade ? { fetchpriority: 'high' } : { loading: 'lazy' })}>
+        </picture>`;
+}
+
+/**
  * Cartão de projeto.
  * Versão resumida (página inicial) ou detalhada (página de projetos).
  */
@@ -37,8 +54,14 @@ export function cartaoProjeto(projeto, { detalhado = false } = {}) {
     return html`
         <article ${atributos({ id: detalhado ? projeto.id : null })} class="cartao ${colunas}"
                  aria-labelledby="titulo-${projeto.id}">
-            <img class="cartao__imagem" src="${projeto.imagem}" alt="${detalhado ? projeto.alt : ''}"
-                 width="800" height="500" loading="lazy">
+            ${imagemResponsiva({
+                src: projeto.imagem,
+                alt: detalhado ? projeto.alt : '',
+                largura: 800,
+                altura: 500,
+                tamanhos: '(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw',
+                classe: 'cartao__imagem'
+            })}
             <div class="cartao__corpo">
                 ${etiqueta(projeto.categoria, projeto.variante, 'cartao__etiqueta')}
                 <h3 id="titulo-${projeto.id}" class="cartao__titulo">${projeto.titulo}</h3>

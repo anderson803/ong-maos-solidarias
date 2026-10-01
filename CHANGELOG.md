@@ -7,6 +7,11 @@ o [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 ## [Não lançado]
 
 ### Adicionado
+- Build de produção (`npm run build`) com minificação de HTML, CSS e JavaScript.
+- Verificação de integridade (SRI) nos scripts da Day.js carregados por CDN.
+- Imagens WebP responsivas com `<picture>` e `srcset` (71% menores).
+- CI/CD com GitHub Actions: testes em pull requests e deploy automático no GitHub Pages.
+- Testes funcionais e `package.json` com os comandos do projeto.
 - Modo de alto contraste com preferência salva e suporte a `prefers-contrast` e `forced-colors`.
 - Auditoria automatizada de acessibilidade (WCAG 2.1 AA) e relatório em `docs/`.
 - Documentação completa: README, guia de contribuição (CONTRIBUTING.md) e este changelog.

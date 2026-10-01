@@ -1,0 +1,70 @@
+# Integração e deploy contínuos (CI/CD)
+# - Em todo pull request para develop ou main: gera o build e roda os testes.
+# - A cada push na main (merge de uma release ou hotfix): repete os testes e,
+#   se tudo passar, publica a pasta dist/ no GitHub Pages.
+name: CI e deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [develop, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-e-testes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar Playwright e Chromium
+        run: |
+          pip install playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Gerar o build de produção
+        run: npm run build
+
+      - name: Testes funcionais no build
+        run: python tests/testes_funcionais.py dist
+
+      - name: Auditoria de acessibilidade no build
+        run: python tests/auditoria_acessibilidade.py dist
+
+      - name: Enviar o build para o GitHub Pages
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build-e-testes
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.publicacao.outputs.page_url }}
+    steps:
+      - name: Publicar no GitHub Pages
+        id: publicacao
+        uses: actions/deploy-pages@v4

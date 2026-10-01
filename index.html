@@ -10,10 +10,15 @@
     <!-- Aplica o alto contraste antes de desenhar a página (sem "piscar") -->
     <script src="js/contraste-inicial.js"></script>
     <!-- Biblioteca externa Day.js (datas), via CDN, com versão fixa.
-         "defer" garante a ordem: biblioteca → plugin → idioma → aplicação. -->
-    <script defer src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/dayjs.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/plugin/relativeTime.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/locale/pt-br.js"></script>
+         "defer" garante a ordem: biblioteca → plugin → idioma → aplicação.
+         "integrity" (SRI): o navegador só executa o arquivo se o conteúdo for exatamente
+         o esperado, protegendo o site caso o CDN seja comprometido. -->
+    <script defer src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/dayjs.min.js"
+            integrity="sha384-DpVxUeeBWjUvUV1czyIHJAjh+jYUZFu2lLakbdua5vbwOrBGi1UgaKCHjTC+x3Ky" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/plugin/relativeTime.js"
+            integrity="sha384-ssUzPQXjLHLO39a9AiuwxnnyDxIvOMUxEQpqfreUaW7jLEdDAXiF6UooZRO53F6Z" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/locale/pt-br.js"
+            integrity="sha384-N5YzbiU7DG3BWIMW4lF4zgLd8e8c/n0inwDE8ylNAK2O3jltR4R6i6JG7xFK0hqb" crossorigin="anonymous"></script>
     <!-- Ponto de entrada da aplicação (módulo ES) -->
     <script type="module" src="js/main.js"></script>
 </head>
