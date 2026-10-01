@@ -23,7 +23,7 @@ export const paginaInicio = {
                         </p>
                     </div>
                     <div class="col-12 col-lg-5">
-                        <img class="destaque__imagem" src="../imagens/ong-maos-solidarias.jpg"
+                        <img class="destaque__imagem" src="imagens/ong-maos-solidarias.jpg"
                              alt="Voluntários da ONG Mãos Solidárias reunidos em uma ação comunitária"
                              width="960" height="640">
                     </div>
