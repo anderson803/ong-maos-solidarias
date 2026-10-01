@@ -1,0 +1,19 @@
+{
+  "name": "ong-maos-solidarias",
+  "version": "0.3.0",
+  "description": "Plataforma web da ONG Mãos Solidárias — projeto acadêmico de Desenvolvimento Front-end para Web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/build.mjs && python -m http.server 8000 --directory dist",
+    "test": "python tests/testes_funcionais.py && python tests/auditoria_acessibilidade.py",
+    "test:dist": "node scripts/build.mjs && python tests/testes_funcionais.py dist && python tests/auditoria_acessibilidade.py dist",
+    "imagens": "python scripts/otimizar_imagens.py"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED"
+}
