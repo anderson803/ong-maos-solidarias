@@ -332,6 +332,11 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
         opacity: 1;
         transform: translateY(0);
     }
+    /* Fechado com a tecla Esc, mesmo com o mouse ou o foco sobre o item */
+    .navegacao__item--submenu.navegacao__item--fechado > .submenu {
+        visibility: hidden;
+        opacity: 0;
+    }
     .submenu__link { color: var(--cor-primaria-escura); }
     .submenu__link:hover,
     .submenu__link:focus-visible { background: var(--cor-primaria-clara); }

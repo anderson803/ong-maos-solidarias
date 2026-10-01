@@ -38,11 +38,37 @@ export function iniciarMenu() {
     });
 
     document.addEventListener('keydown', (evento) => {
-        if (evento.key === 'Escape' && navegacao.classList.contains('navegacao--aberta')) {
+        if (evento.key !== 'Escape') return;
+        if (fecharSubmenu()) return;
+        if (navegacao.classList.contains('navegacao--aberta')) {
             fecharMenu();
             botaoMenu.focus();
         }
     });
+
+    // O submenu abre com o mouse ou com o foco. Ao sair dele, a classe que o
+    // mantinha fechado é removida, para que volte a abrir normalmente.
+    navegacao.querySelectorAll('.navegacao__item--submenu').forEach((item) => {
+        const reabilitar = () => item.classList.remove('navegacao__item--fechado');
+        item.addEventListener('mouseleave', reabilitar);
+        item.addEventListener('focusout', (evento) => {
+            if (!item.contains(evento.relatedTarget)) reabilitar();
+        });
+    });
+}
+
+/**
+ * Fecha o submenu aberto pelo mouse ou pelo teclado (WCAG 1.4.13: conteúdo
+ * exibido ao passar o mouse ou focar deve poder ser dispensado com Esc).
+ * Retorna true se havia um submenu aberto.
+ */
+function fecharSubmenu() {
+    const item = [...document.querySelectorAll('.navegacao__item--submenu')]
+        .find((el) => el.matches(':hover, :focus-within') && !el.classList.contains('navegacao__item--fechado'));
+    if (!item || getComputedStyle(item.querySelector('.submenu')).position !== 'absolute') return false;
+    item.classList.add('navegacao__item--fechado');
+    if (item.contains(document.activeElement)) item.querySelector('.navegacao__link').focus();
+    return true;
 }
 
 /* ===== MODAIS ===== */
