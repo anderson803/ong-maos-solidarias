@@ -57,7 +57,7 @@ construído ao longo das quatro Experiências Práticas:
 | CSS3 | Variáveis (design system), CSS Grid, Flexbox, metodologia BEM |
 | JavaScript (ES2020+) | Módulos ES (`import`/`export`), roteamento, templates, validação |
 | Web Storage API | Persistência dos cadastros e do rascunho no `localStorage` |
-| [Day.js 1.11.13](https://day.js.org/) | Cálculo de idade e datas relativas ("há 5 minutos"), via CDN |
+| [Day.js 1.11.13](https://day.js.org/) | Cálculo de idade e datas relativas ("há 5 minutos"), via CDN com verificação de integridade (SRI) |
 | Git e GitHub | Versionamento com GitFlow e commits semânticos |
 | GitHub Pages | Hospedagem estática com HTTPS |
 
