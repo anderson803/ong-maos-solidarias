@@ -567,7 +567,8 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
     box-shadow: 0 0 0 3px rgba(26, 86, 184, 0.35);
 }
 .formulario__entrada:hover { border-color: var(--cor-texto-suave); }
-.formulario__entrada::placeholder { color: var(--cor-texto-suave); opacity: 0.8; }
+/* Opacidade 1: com 0.8 o texto de exemplo ficava com 4.42:1, abaixo de 4.5:1 */
+.formulario__entrada::placeholder { color: var(--cor-texto-suave); opacity: 1; }
 /* Estados de validação controlados pelo JavaScript (aria-invalid) */
 .formulario__entrada[aria-invalid="false"] { border-color: var(--cor-sucesso); }
 .formulario__entrada[aria-invalid="true"] {
