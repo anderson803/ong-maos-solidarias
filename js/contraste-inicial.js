@@ -5,6 +5,10 @@
  * A chave segue o mesmo padrão de js/modules/storage.js.
  */
 (function () {
+    // Marca que o JavaScript está ativo já no início, para o menu do celular
+    // nascer recolhido (antes, ele aparecia aberto e "pulava" ao carregar o módulo).
+    document.documentElement.classList.add('js');
+
     var preferencia = null;
     try {
         preferencia = JSON.parse(localStorage.getItem('maos-solidarias:contraste'));
