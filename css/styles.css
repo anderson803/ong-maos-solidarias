@@ -489,6 +489,9 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
     font-weight: var(--peso-negrito);
 }
 .alerta__titulo { margin: 0 0 var(--esp-1); font-size: var(--fonte-lg); font-weight: var(--peso-negrito); color: var(--alerta-cor); }
+/* O texto do alerta pode encolher e quebrar palavras longas: com o texto
+   ampliado em 200% ele ultrapassava a coluna lateral (WCAG 1.4.4). */
+.alerta > * { min-width: 0; overflow-wrap: break-word; }
 .alerta p:last-child,
 .alerta ul:last-child { margin-bottom: 0; }
 .alerta--info { --alerta-cor: var(--cor-foco); --alerta-fundo: #eaf1fb; }
