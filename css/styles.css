@@ -539,6 +539,9 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
 
 /* Formulário */
 .formulario__grupo {
+    /* Por padrão o fieldset não encolhe abaixo do conteúdo (min-width: min-content),
+       o que gerava rolagem horizontal em telas de 320px (WCAG 1.4.10). */
+    min-width: 0;
     border: 1px solid var(--cor-borda);
     border-radius: var(--raio-lg);
     padding: var(--esp-5);
