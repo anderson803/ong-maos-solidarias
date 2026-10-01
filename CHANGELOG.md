@@ -7,9 +7,17 @@ o [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 ## [Não lançado]
 
 ### Adicionado
+- Modo de alto contraste com preferência salva e suporte a `prefers-contrast` e `forced-colors`.
+- Auditoria automatizada de acessibilidade (WCAG 2.1 AA) e relatório em `docs/`.
 - Documentação completa: README, guia de contribuição (CONTRIBUTING.md) e este changelog.
 - Modelo de pull request com checklist de revisão.
 - Arquivo `.gitignore` e `.nojekyll`.
+
+### Corrigido
+- Contraste do contorno de foco no cabeçalho e no rodapé (WCAG 1.4.11).
+- Contraste do texto de exemplo dos campos (WCAG 1.4.3).
+- Rolagem horizontal do formulário em 320 px (WCAG 1.4.10) e com texto em 200% (WCAG 1.4.4).
+- Submenu de Projetos agora fecha com a tecla Esc (WCAG 1.4.13).
 
 ### Alterado
 - `index.html` movido para a raiz do projeto, para publicação no GitHub Pages.
