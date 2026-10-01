@@ -6,15 +6,22 @@ que podem ser medidos por código. Os demais (leitor de tela, clareza dos textos
 fazem parte do roteiro manual descrito em TESTES.md.
 
 Uso:
-    python -m http.server 8000      (em outro terminal, na raiz do projeto)
-    python tests/auditoria_acessibilidade.py [endereço]
+    python tests/auditoria_acessibilidade.py            # código-fonte
+    python tests/auditoria_acessibilidade.py dist       # build de produção
+    python tests/auditoria_acessibilidade.py https://…  # site publicado
 """
 import json
 import sys
 
 from playwright.sync_api import sync_playwright
 
-BASE = sys.argv[1] if len(sys.argv) > 1 else 'http://localhost:8000/'
+import servidor
+
+ALVO = sys.argv[1] if len(sys.argv) > 1 else '.'
+if ALVO.startswith('http'):
+    BASE, ENCERRAR = ALVO.rstrip('/') + '/', lambda: None
+else:
+    BASE, ENCERRAR = servidor.iniciar(ALVO)
 ROTAS = ['#/inicio', '#/projetos', '#/cadastro', '#/painel', '#/pagina-inexistente']
 
 # Funções executadas dentro do navegador
@@ -374,4 +381,7 @@ def main():
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    finally:
+        ENCERRAR()
