@@ -314,6 +314,9 @@ def main():
             'computador': {'viewport': {'width': 1280, 'height': 900}},
             # 1.4.10 Reflow: 320 px de largura equivale a 1280 px com zoom de 400%
             'reflow-320px': {'viewport': {'width': 320, 'height': 640}},
+            # Modo de alto contraste, ativado pela preferência do sistema
+            'alto-contraste': {'viewport': {'width': 1280, 'height': 900}, 'contrast': 'more'},
+            'alto-contraste-320px': {'viewport': {'width': 320, 'height': 640}, 'contrast': 'more'},
         }
         for nome, opcoes in cenarios.items():
             contexto = navegador.new_context(**opcoes)
@@ -324,7 +327,7 @@ def main():
                 pagina.goto(BASE + rota)
                 pagina.wait_for_timeout(400)
                 problemas = pagina.evaluate(JS_AUDITORIA)
-                if nome == 'computador':
+                if nome in ('computador', 'alto-contraste'):
                     foco, focaveis = auditar_foco(pagina)
                     problemas += foco
                 if not sem_rolagem_horizontal(pagina):
@@ -343,7 +346,7 @@ def main():
                 pagina.keyboard.press('Escape')
             # 1.4.4 Redimensionar texto: fonte em 200% na tela de computador.
             # (Em 320 px o critério aplicável é o 1.4.10, já verificado acima.)
-            if nome != 'computador':
+            if nome not in ('computador', 'alto-contraste'):
                 contexto.close()
                 continue
             pagina.goto(BASE + '#/cadastro')
