@@ -4,7 +4,9 @@ Todas as mudanças relevantes do projeto são registradas aqui.
 O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e as versões seguem
 o [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
-## [Não lançado]
+## [1.0.0] — 2026-09-30 — Experiência Prática IV
+
+Primeira versão estável, publicada em https://anderson803.github.io/ong-maos-solidarias/
 
 ### Adicionado
 - Build de produção (`npm run build`) com minificação de HTML, CSS e JavaScript.

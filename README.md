@@ -14,7 +14,7 @@ construído ao longo das quatro Experiências Práticas:
 | Experiência Prática III | Single Page Application em JavaScript modular |
 | Experiência Prática IV | Versionamento com GitFlow, acessibilidade WCAG 2.1 AA, otimização e deploy |
 
-**Site publicado:** _link inserido após o deploy_
+**Site publicado:** https://anderson803.github.io/ong-maos-solidarias/
 
 ---
 
@@ -73,7 +73,7 @@ ou superior com o Playwright (`pip install playwright` e `python -m playwright i
 1. Clone o repositório:
 
    ```bash
-   git clone https://github.com/SEU-USUARIO/ong-maos-solidarias.git
+   git clone https://github.com/anderson803/ong-maos-solidarias.git
    cd ong-maos-solidarias
    ```
 
@@ -245,7 +245,7 @@ O deploy é automático, pelo **GitHub Actions** (`.github/workflows/ci-deploy.y
    passar, publica a pasta `dist/` no **GitHub Pages**, com HTTPS automático.
 
 Configuração inicial (uma única vez): no GitHub, abra **Settings → Pages** e, em *Source*,
-escolha **GitHub Actions**. O site fica disponível em `https://SEU-USUARIO.github.io/ong-maos-solidarias/`.
+escolha **GitHub Actions**. O site fica disponível em `https://anderson803.github.io/ong-maos-solidarias/`.
 
 ## Manutenção
 

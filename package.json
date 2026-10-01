@@ -1,6 +1,6 @@
 {
   "name": "ong-maos-solidarias",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Plataforma web da ONG Mãos Solidárias — projeto acadêmico de Desenvolvimento Front-end para Web",
   "private": true,
   "type": "module",
