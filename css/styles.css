@@ -33,6 +33,7 @@
     --cor-erro: #b3261e;
     --cor-sucesso: #1e7b3a;
     --cor-foco: #1a56b8;
+    --cor-foco-inverso: #ffffff;   /* foco sobre fundos escuros */
 
     /* Tipografia — escala modular 1.25 (terça maior) */
     --fonte-base: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -101,6 +102,16 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
     outline: 3px solid var(--cor-foco);
     outline-offset: 2px;
 }
+/* Em fundos escuros (cabeçalho, rodapé, link "pular") o azul do foco teria
+   contraste de apenas 1.2:1; o contorno passa a ser branco (WCAG 1.4.11). */
+.cabecalho :focus-visible,
+.rodape :focus-visible,
+.pular-conteudo:focus-visible {
+    outline-color: var(--cor-foco-inverso);
+}
+/* O link "pular" fica sobre o cabeçalho: o contorno é desenhado por dentro,
+   contrastando com o próprio fundo escuro do link. */
+.pular-conteudo:focus-visible { outline-offset: -6px; }
 
 /* ===== 3. LAYOUT ===== */
 .container {
@@ -324,6 +335,8 @@ abbr[title] { text-decoration: none; color: var(--cor-erro); }
     .submenu__link { color: var(--cor-primaria-escura); }
     .submenu__link:hover,
     .submenu__link:focus-visible { background: var(--cor-primaria-clara); }
+    /* O submenu suspenso tem fundo claro: volta ao contorno azul */
+    .submenu__link:focus-visible { outline-color: var(--cor-foco); }
 }
 
 /* Destaque (hero) */
