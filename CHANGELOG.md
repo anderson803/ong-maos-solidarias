@@ -4,6 +4,11 @@ Todas as mudanças relevantes do projeto são registradas aqui.
 O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e as versões seguem
 o [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.0.1] — 2026-09-30
+
+### Corrigido
+- Deslocamento de layout no carregamento (CLS de 0.16 para 0): menu do celular e rodapé não "pulam" mais.
+
 ## [1.0.0] — 2026-09-30 — Experiência Prática IV
 
 Primeira versão estável, publicada em https://anderson803.github.io/ong-maos-solidarias/
